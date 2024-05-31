@@ -1,13 +1,19 @@
-import React from "react"
+import React from "react";
 
 interface CardProps {
-    text:string,
-    onClick?:()=>void
+  text: string;
+  type?: "submit" | "reset" | "button" | undefined;
+  onClick?: () => void;
 }
 
-export default function Button  ({ text, onClick }:CardProps)  {
-    return (
-        <button className="w-full p-3 rounded-xl bg-green-600 text-white" onClick={onClick}>{text}</button>
-
-    );
-};
+export default function Button({ text, onClick, type }: CardProps) {
+  return (
+    <button
+      className="w-full p-3 rounded-xl bg-leaf text-dark font-semibold border-dark border-2"
+      onClick={onClick}
+      type={type}
+    >
+      {text}
+    </button>
+  );
+}

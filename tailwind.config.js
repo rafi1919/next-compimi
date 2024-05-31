@@ -1,11 +1,15 @@
 /** @type {import('tailwindcss/types').Config} */
 const config = {
-  content: [
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./templates/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./pages/**/*.{js,ts,jsx,tsx}", "./templates/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        dark: "#020000",
+        paper: "#F6F6F8",
+        indigo: "#A57AEE",
+        leaf: "#2DD2A2",
+      },
+    },
   },
   plugins: [],
 };

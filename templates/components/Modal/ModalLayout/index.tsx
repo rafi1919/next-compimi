@@ -1,38 +1,43 @@
 import React, { ReactNode, useLayoutEffect, useRef } from "react";
 
 interface ModalProps {
-    open: Boolean;
-    onClose: () => void;
-    children: ReactNode;
+  open: Boolean;
+  onClose: () => void;
+  children: ReactNode;
 }
 
 const Modal: React.FC<ModalProps> = ({ open, onClose, children }) => {
-    const dialogRef = useRef<HTMLDialogElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
-    useLayoutEffect(() => {
-        const dialog = dialogRef.current;
-        if (dialog) {
-            if (open) {
-                dialog.showModal();
-            } else {
-                dialog.close();
-            }
-        }
-    }, [open]);
+  useLayoutEffect(() => {
+    const dialog = dialogRef.current;
+    if (dialog) {
+      if (open) {
+        dialog.showModal();
+      } else {
+        dialog.close();
+      }
+    }
+  }, [open]);
 
-    const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement, MouseEvent>) => {
-        if (e.target === e.currentTarget) {
-            onClose();
-        }
-    };
+  const handleBackdropClick = (
+    e: React.MouseEvent<HTMLDialogElement, MouseEvent>
+  ) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
 
-    return (
-        <dialog ref={dialogRef} onClick={handleBackdropClick}  className="bg-slate-700 p-4 rounded-lg border-[1px] border-white">
-            <div>
-                {children}
-            </div>
-        </dialog>
-    );
+  return (
+    <dialog
+      ref={dialogRef}
+      onClick={handleBackdropClick}
+      className="bg-paper  rounded-xl border-dark border-2 transition-500 "
+    >
+      <div className="h-[50px] border-b-2 border-dark"></div>
+      <div className="p-4 ">{children}</div>
+    </dialog>
+  );
 };
 
 export default Modal;

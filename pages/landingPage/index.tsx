@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import HomeView from "./view";
+import LandingView from "./view";
 import { EventData } from "@/api";
 import { Event } from "@/domain/entities/Events";
 import { EventService } from "@/aplication/services/EventService";
@@ -16,7 +16,7 @@ const index = () => {
     fetchEvents();
   }, []);
 
-  return <HomeView eventData={events} />;
+  return <LandingView eventData={events} />;
 };
 
 export default index;
