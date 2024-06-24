@@ -9,9 +9,9 @@ const SearchBar = () => {
         name="search"
         placeholder="Search"
       />
-      <button type="submit" className="absolute right-0  mt-3 mr-4">
+      {/* <button type="submit" className="absolute right-0  mt-3 mr-4">
         <FaSearch />
-      </button>
+      </button> */}
     </div>
   );
 };

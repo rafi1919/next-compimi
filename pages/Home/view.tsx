@@ -36,7 +36,10 @@ const HomeView: React.FC<EventProps> = ({ eventData }) => {
           <div className=" flex justify-between items-center">
             <h1 className=" text-dark text-[32px] font-bold">today's event</h1>
 
-            <FaFilter className="text-dark" onClick={handleModalOpen} />
+            <FaFilter
+              className="text-dark cursor-pointer"
+              onClick={handleModalOpen}
+            />
           </div>
         </div>
         <FilterModal
@@ -50,7 +53,12 @@ const HomeView: React.FC<EventProps> = ({ eventData }) => {
       <div className="flex flex-col gap-2 p-3">
         {eventsToDisplay.map((item: any) => (
           <div key={item + 1}>
-            <EventCard location={item.location} name={item.name} />
+            <EventCard
+              location={item.location}
+              name={item.name}
+              id={item.id}
+              city={item.city}
+            />
           </div>
         ))}
       </div>

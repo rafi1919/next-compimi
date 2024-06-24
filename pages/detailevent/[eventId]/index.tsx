@@ -1,23 +1,48 @@
+import React, { useEffect, useState } from "react";
 import DetailEvent from "./view";
 import { useRouter } from "next/router";
-import { EventData, DayListData } from "@/api";
+import { Event } from "@/domain/entities/Events";
+import { Day } from "@/domain/entities/Day";
+import { EventService } from "@/aplication/services/EventService";
+import { DayService } from "@/aplication/services/DayService";
 
-const index = () => {
-  const route = useRouter();
-  const { asPath } = route;
+const Index: React.FC = () => {
+  const router = useRouter();
+  const { asPath } = router;
+  const pathPop = asPath.split("/").pop() || "";
 
-  const routeParts = asPath.split("/");
-  const eventName = routeParts[routeParts.length - 1].replace(/\+/g, " ");
+  const [events, setEvents] = useState<Event[]>([]);
+  const eventService = new EventService();
+  const [days, setDays] = useState<Day[]>([]);
+  const dayService = new DayService();
 
-  const pathEvent = EventData.find(
-    (data) => data.name.toLocaleLowerCase() === eventName
-  );
-  console.log(pathEvent);
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const fetchedEvents = await eventService.getAllEvents();
+        setEvents(fetchedEvents);
+      } catch (error) {
+        console.error("Failed to fetch events", error);
+      }
+    };
 
-  const ListData = DayListData.find((data) => data.eventId === pathEvent?.id);
-  console.log(pathEvent);
+    const fetchDays = async () => {
+      try {
+        const fetchedDays = await dayService.getAllDays(pathPop);
+        setDays(fetchedDays);
+      } catch (error) {
+        console.error("Failed to fetch days", error);
+      }
+    };
 
-  return <DetailEvent dataEvent={pathEvent} dayListData={ListData} />;
+    fetchEvents();
+    fetchDays();
+  }, [asPath]);
+
+  const pathEvent = events.find((event) => event.id === pathPop);
+  // console.log(days)
+
+  return <DetailEvent dataEvent={pathEvent} dayListData={days} />;
 };
 
-export default index;
+export default Index;

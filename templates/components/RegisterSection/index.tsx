@@ -5,12 +5,12 @@ import { Button } from "../Buttons";
 import FormInput from "../FormInput";
 
 interface loginProps {
-  // onClose?: () => void;
-  onClick: () => void;
+  onClick?: () => void;
 }
-const LoginSection = ({ onClick }: loginProps) => {
+const RegisterSection = ({ onClick }: loginProps) => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [instagram, setInstagram] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
@@ -20,6 +20,8 @@ const LoginSection = ({ onClick }: loginProps) => {
       setUsername(value);
     } else if (name === "password") {
       setPassword(value);
+    } else if (name === "instagram") {
+      setInstagram(value);
     }
   };
 
@@ -27,10 +29,14 @@ const LoginSection = ({ onClick }: loginProps) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:8080/api/auth", {
-        username: username,
-        password: password,
-      });
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/register",
+        {
+          username: username,
+          password: password,
+          instagram: instagram,
+        }
+      );
 
       if (response.status === 200) {
         // const token = {
@@ -49,8 +55,6 @@ const LoginSection = ({ onClick }: loginProps) => {
     }
   };
 
-  const handleRegister = () => {};
-
   return (
     <div className=" lg:w-[470px] md:w-full w-full bg-white rounded-xl lg:h-[95vh] md:h-full h-full p-4 lg:m-4 m-0  flex items-center justify-center">
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
@@ -68,17 +72,24 @@ const LoginSection = ({ onClick }: loginProps) => {
           type="password"
           onChange={handleInputChange}
         />
+        <FormInput
+          value={instagram}
+          placeholder="Instagram"
+          name="instagram"
+          type="instagram"
+          onChange={handleInputChange}
+        />
         <p className="text-center text-gray-500">
-          Dont have account ? lets{" "}
+          Remember your account ? lets{" "}
           <span className="text-leaf font-bold" onClick={onClick}>
-            Register
+            Login
           </span>
         </p>
-        <Button text="Login" type="submit" />
+        <Button text="Register" type="submit" />
         {error && <p className="text-red-500 text-center">{error}</p>}
       </form>
     </div>
   );
 };
 
-export default LoginSection;
+export default RegisterSection;

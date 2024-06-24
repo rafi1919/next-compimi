@@ -14,6 +14,14 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
+  // try {
+  //   jwt.verify(token, JWT_SECRET);
+  // } catch (err) {
+  //   if (authRoutePage.includes(currentPath)) {
+  //     return NextResponse.redirect(new URL("/", request.url));
+  //   }
+  // }
+
   return NextResponse.next();
 }
 

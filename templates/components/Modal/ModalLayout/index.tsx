@@ -32,7 +32,7 @@ const Modal: React.FC<ModalProps> = ({ open, onClose, children }) => {
     <dialog
       ref={dialogRef}
       onClick={handleBackdropClick}
-      className="bg-paper  rounded-xl border-dark border-2 transition-500 "
+      className="bg-paper  rounded-xl border-dark border-2 transition-500 min-w-[250px]"
     >
       <div className="h-[50px] border-b-2 border-dark"></div>
       <div className="p-4 ">{children}</div>

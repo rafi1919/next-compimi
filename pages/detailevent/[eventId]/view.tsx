@@ -23,9 +23,8 @@ interface DetaiProps {
   dayListData: any;
 }
 const DetailEvent = ({ dataEvent, dayListData }: DetaiProps) => {
-  const [activeDay, setActiveDay] = useState("day 1");
+  const [activeDay, setActiveDay] = useState("dayOne");
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const route = useRouter();
 
   const handleDayChange = (day: string) => {
     setActiveDay(day);
@@ -35,8 +34,18 @@ const DetailEvent = ({ dataEvent, dayListData }: DetaiProps) => {
     setModalOpen(!modalOpen);
   };
 
-  const cosplayData =
-    activeDay === "day 1" ? dayListData?.dayOne : dayListData?.dayTwo;
+  const cosplayData = dayListData?.cosplayList;
+
+  const groupByAnime = (data: any[]) => {
+    return data.reduce((acc: any, item: any) => {
+      if (!acc[item.animeId]) {
+        acc[item.animeId] = [];
+      }
+      acc[item.animeId].push(item);
+      return acc;
+    }, {});
+  };
+  const groupedData = cosplayData ? groupByAnime(cosplayData[activeDay]) : {};
 
   return (
     <Layout>
@@ -54,48 +63,57 @@ const DetailEvent = ({ dataEvent, dayListData }: DetaiProps) => {
             <Dummy />
           </div>
           <div className="text-dark py-3">
-            <p className="text-md font-light">4 mei - 5 mei 2024</p>
-            <p className="text-md font-light flex">
+            <p className="text-md ">4 mei - 5 mei 2024</p>
+            <p className="text-md flex">
               <FaMapPin />
-              {dataEvent ? dataEvent.location : null}
+              {dataEvent ? dataEvent.city : null},{" "}
+              <span className="text-indigo mr-2">
+                <a href={dataEvent ? dataEvent.maps : null}>
+                  {" "}
+                  {dataEvent ? dataEvent.location : null}
+                </a>
+              </span>
+            </p>
+            <p className="text-md py-2 text-gray-500">
+              {dataEvent ? dataEvent.description : null}
             </p>
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div className="col-span-1">
               <SwitchButton
                 days="day 1"
-                active={activeDay === "day 1"}
-                onClick={() => handleDayChange("day 1")}
+                active={activeDay === "dayOne"}
+                onClick={() => handleDayChange("dayOne")}
               />
             </div>
             <div className="col-span-1">
               <SwitchButton
                 days="day 2"
-                active={activeDay === "day 2"}
-                onClick={() => handleDayChange("day 2")}
+                active={activeDay === "dayTwo"}
+                onClick={() => handleDayChange("dayTwo")}
               />
             </div>
           </div>
           <div className="py-2">
             <Button text="JOIN" onClick={handleModalOpen} />
           </div>
-          {cosplayData && cosplayData.length > 0 ? (
-            cosplayData.map((item: any) => (
-              <div key={item.id} className="py-3">
-                <p className=" p-2 rounded-t-md font-semibold bg-indigo w-fit">
-                  {item.anime}
+          {cosplayData ? (
+            Object.keys(groupedData).map((anime) => (
+              <div key={anime} className="py-3">
+                <p className="p-2 rounded-t-md font-semibold bg-indigo w-fit">
+                  {anime}
                 </p>
                 <div className="border-2 border-indigo rounded-b-md rounded-tr-md">
-                  {item.ListCosplay.map((item: any, index: number) => (
+                  {groupedData[anime].map((item: any, index: number) => (
                     <div
                       className="flex items-end justify-between text-dark p-2"
                       key={index}
                     >
                       <p className="font-bold">{item.char}</p>
                       <Link
-                        href={`https://www.instagram.com/${item.user}/?hl=en`}
+                        href={`https://www.instagram.com/${item.instagram}/?hl=en`}
                       >
-                        <p>@{item.user}</p>
+                        <p>@{item.instagram}</p>
                       </Link>
                     </div>
                   ))}
@@ -106,7 +124,12 @@ const DetailEvent = ({ dataEvent, dayListData }: DetaiProps) => {
             <p className="text-center font-bold">Not Listed</p>
           )}
         </div>
-        <JoinModal open={modalOpen} onClose={handleModalOpen} />
+        <JoinModal
+          open={modalOpen}
+          onClose={handleModalOpen}
+          dayId={activeDay}
+          eventId={dataEvent ? dataEvent.id : null}
+        />
       </div>
     </Layout>
   );

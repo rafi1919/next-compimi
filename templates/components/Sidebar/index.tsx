@@ -10,7 +10,7 @@ interface sidebarProps {
 }
 
 const Sidebar = ({ onClose }: sidebarProps) => {
-  const route = useRouter();
+  const router = useRouter();
 
   interface NavProps {
     icon: any;
@@ -28,13 +28,13 @@ const Sidebar = ({ onClose }: sidebarProps) => {
     },
     {
       icon: FaTshirt,
-      path: "/home",
+      path: "/shirt",
     },
   ];
 
   const logout = () => {
     Cookies.remove("token");
-    route.push("/");
+    router.push("/");
   };
 
   return (
@@ -49,7 +49,14 @@ const Sidebar = ({ onClose }: sidebarProps) => {
         {NavItem.map((item) => (
           <Link href={item.path} key={item.icon}>
             <p className="text-xl text-dark hover:text-red flex flex-col items-center p-5">
-              <span className="text-[32px]">
+              <span
+                className={`text-[32px]  p-2 rounded ${
+                  router.pathname.startsWith(item.path)
+                    ? "shadow-xl shadow-red-700"
+                    : ""
+                }`}
+              >
+                {/* <span className="text-[32px]"> */}
                 <item.icon />
               </span>
             </p>

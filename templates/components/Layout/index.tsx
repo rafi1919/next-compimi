@@ -1,17 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProfileSection from "@/templates/components/ProfileSection";
-import LoginSection from "@/templates/components/LoginSection";
 import Sidebar from "@/templates/components/Sidebar";
 import Navbar from "../Navbar";
-import useCookieToken from "@/hooks";
+import { User } from "@/domain/entities/User";
+import { UserService } from "@/aplication/services/UserService";
 
 interface EventProps {
   children: React.ReactNode;
 }
 
 const Layout: React.FC<EventProps> = ({ children }) => {
-  const token = useCookieToken();
-  const isLogin = !!token;
+  const [user, setUser] = useState<User[]>([]);
+  const userService = new UserService();
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const fetchedUser = await userService.getAllUsers();
+        setUser(fetchedUser);
+      } catch (error) {
+        console.error("Failed to fetch user", error);
+      }
+    };
+    fetchUser();
+  }, []);
+
+  // console.log(user)
 
   return (
     <div className="w-full h-screen">
@@ -24,8 +37,7 @@ const Layout: React.FC<EventProps> = ({ children }) => {
           {children}
         </div>
         <div className="col-span-4 lg:block md:hidden hidden">
-          <ProfileSection />
-          {/* <LoginSection /> */}
+          <ProfileSection name={user.username} instagram={user.instagram} />
         </div>
       </div>
     </div>

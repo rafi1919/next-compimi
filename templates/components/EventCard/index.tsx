@@ -16,24 +16,26 @@ const Dummy = () => {
 };
 
 interface EventProps {
+  id: string;
+  name: string;
   location: string;
-  name?: string;
+  city: string;
 }
 
-const EventCard = ({ location, name }: EventProps) => {
-  const pathName = name ? name.toLocaleLowerCase().replace(/\s+/g, "+") : "";
+const EventCard = ({ location, name, id, city }: EventProps) => {
+  // const pathName = name ? name.toLocaleLowerCase().replace(/\s+/g, "+") : "";
 
   return (
-    <div className="event card p-3 border-dark border-2 rounded-lg ">
+    <div className="event card p-3  rounded-lg bg-white">
       <Dummy />
       <div className="text-dark py-3">
         <p className="text-[32px] font-bold text-indigo">{name}</p>
         <p className="text-md ">4 mei - 5 mei 2024</p>
         <p className="text-md flex">
-          <FaMapPin /> {location}
+          <FaMapPin /> {city}, {location}
         </p>
       </div>
-      <Link href={`./detailevent/${pathName}`}>
+      <Link href={`./detailevent/${id}`}>
         <Button text="Read More..." />
       </Link>
     </div>

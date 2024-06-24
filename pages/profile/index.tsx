@@ -4,7 +4,7 @@ import ProfileSection from "@/templates/components/ProfileSection";
 const Index = () => {
   return (
     <Layout>
-      <ProfileSection />
+      <ProfileSection name={""} instagram={""} />
     </Layout>
   );
 };
