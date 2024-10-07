@@ -1,7 +1,17 @@
 import axios from "axios";
 import { Event } from "@/domain/entities/Events";
+import dotenv from "dotenv";
 
-export const getAllEvents = async (): Promise<Event[]> => {
-  const response = await axios.get("http://localhost:8080/api/event");
+dotenv.config();
+
+const getAllEvents = async (): Promise<Event[]> => {
+  const response = await axios.get(`${process.env.DATABASE_URL}/events`);
   return response.data;
 };
+
+const getEventById = async (id: string): Promise<Event[]> => {
+  const response = await axios.get(`${process.env.DATABASE_URL}/events/${id}`);
+  return response.data;
+};
+
+export { getAllEvents, getEventById };

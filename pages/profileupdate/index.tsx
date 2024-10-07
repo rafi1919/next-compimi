@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import LandingView from "./view";
+import EditView from "./view";
 
 const index = () => {
-  return <LandingView />;
+  return <EditView />;
 };
 
 export default index;

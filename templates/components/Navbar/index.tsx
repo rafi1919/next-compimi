@@ -41,8 +41,8 @@ const Navbar = () => {
   };
 
   return (
-    <div className="lg:hidden md:relative relative p-4">
-      <div className="flex justify-between">
+    <div className="lg:hidden md:relative relative p-4 ">
+      <div className="flex justify-between text-white">
         <div>
           <AiOutlineMenu className="text-xl" onClick={toggleSidebar} />
         </div>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Layout from "@/templates/components/Layout";
 import { FaFilter } from "react-icons/fa";
 import SearchBar from "@/templates/components/SearchBar";
-import EventCard from "@/templates/components/EventCard";
+import EventCard from "@/templates/components/EventCard2";
 import FilterModal from "@/templates/components/Modal/FilterModal";
 
 interface EventProps {
@@ -17,9 +17,9 @@ const HomeView: React.FC<EventProps> = ({ eventData }) => {
     setModalOpen(!modalOpen);
   };
 
-  const handleFilterApply = (location: string) => {
+  const handleFilterApply = (city: string) => {
     const filteredData = eventData.filter(
-      (event: { location: string }) => event.location === location
+      (event: { city: string }) => event.city === city
     );
     setFilteredEventData(filteredData);
     setModalOpen(false);
@@ -30,37 +30,43 @@ const HomeView: React.FC<EventProps> = ({ eventData }) => {
 
   return (
     <Layout>
-      <div className="py-4 lg:w-[760px] md:w-full w-full bg-paper">
-        <div className="p-3">
-          <SearchBar />
-          <div className=" flex justify-between items-center">
-            <h1 className=" text-dark text-[32px] font-bold">today's event</h1>
+      <div className="py-2 lg:px-0 md:px-0 px-2 h-[100vh] ">
+        <div className="py-4 bg-paper rounded-[40px] w-full h-full ">
+          <div className="p-3">
+            <SearchBar />
+            <div className=" flex justify-between items-center">
+              <h1 className=" text-dark text-[32px] font-bold">
+                today's event
+              </h1>
 
-            <FaFilter
-              className="text-dark cursor-pointer"
-              onClick={handleModalOpen}
-            />
+              <FaFilter
+                className="text-dark cursor-pointer"
+                onClick={handleModalOpen}
+              />
+            </div>
+          </div>
+          <FilterModal
+            open={modalOpen}
+            onClose={handleModalOpen}
+            onApply={handleFilterApply}
+          />
+
+          {/* <div className='mb-40'></div> */}
+          <div className="overflow-auto h-[80%] rounded-[40px] no-scrollbar">
+            <div className="grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-2 p-3">
+              {eventsToDisplay.map((item: any) => (
+                <div key={item + 1} className="flex justify-center">
+                  <EventCard
+                    location={item.location}
+                    name={item.name}
+                    id={item._id}
+                    city={item.city}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-        <FilterModal
-          open={modalOpen}
-          onClose={handleModalOpen}
-          onApply={handleFilterApply}
-        />
-      </div>
-
-      {/* <div className='mb-40'></div> */}
-      <div className="flex flex-col gap-2 p-3">
-        {eventsToDisplay.map((item: any) => (
-          <div key={item + 1}>
-            <EventCard
-              location={item.location}
-              name={item.name}
-              id={item.id}
-              city={item.city}
-            />
-          </div>
-        ))}
       </div>
     </Layout>
   );

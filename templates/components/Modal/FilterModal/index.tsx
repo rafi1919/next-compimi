@@ -61,14 +61,14 @@ const FilterModal: React.FC<ModalProps> = ({ open, onClose, onApply }) => {
     console.log(regencyId);
   };
 
-  const handleFilterApply = () => {
+  const handleFilterApply = (event: React.FormEvent) => {
+    event.preventDefault(); // Prevent form from refreshing the page
     onApply(selectedRegencyId);
-    onClose();
   };
 
   return (
     <ModalLayout open={open} onClose={onClose}>
-      <form className="flex flex-col gap-4">
+      <form className="flex flex-col gap-4" onSubmit={handleFilterApply}>
         <select
           onChange={handleProvinceChange}
           value={selectedProvinceId}
@@ -95,7 +95,7 @@ const FilterModal: React.FC<ModalProps> = ({ open, onClose, onApply }) => {
           ))}
         </select>
 
-        <Button text="filter" onClick={handleFilterApply} />
+        <Button text="filter" type="submit" />
       </form>
     </ModalLayout>
   );

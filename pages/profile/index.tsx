@@ -2,10 +2,6 @@ import Layout from "@/templates/components/Layout";
 import ProfileSection from "@/templates/components/ProfileSection";
 
 const Index = () => {
-  return (
-    <Layout>
-      <ProfileSection name={""} instagram={""} />
-    </Layout>
-  );
+  return <ProfileSection name={""} instagram={""} />;
 };
 export default Index;

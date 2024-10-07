@@ -15,10 +15,12 @@ const LandingView = () => {
         <div className="lg:col-span-6 md:col-span-6 col-span-12  "></div>
 
         <div className="lg:col-span-6 md:col-span-6 col-span-12 ">
-          <div className={`absolute ${isLogin ? "block" : "hidden"}`}>
+          <div className={`${isLogin ? "block" : "hidden"}`}>
             <RegisterSection onClick={handleLogin} />
           </div>
-          <LoginSection onClick={handleLogin} />
+          <div className={`${isLogin ? "hidden" : "block"}`}>
+            <LoginSection onClick={handleLogin} />
+          </div>
         </div>
       </div>
     </div>

@@ -6,7 +6,7 @@ import Tags from "@/templates/components/Tags";
 
 const Dummy = () => {
   return (
-    <div className="bg-slate-600 rounded-md h-full">
+    <div className="bg-slate-600 rounded-md h-[200px] w-[200px]">
       <img
         src="../../banner.jpg"
         alt="banner"
@@ -23,16 +23,16 @@ interface EventProps {
   city: string;
 }
 
-const EventCard = ({ location, name, id, city }: EventProps) => {
+const EventCard2 = ({ location, name, id, city }: EventProps) => {
   // const pathName = name ? name.toLocaleLowerCase().replace(/\s+/g, "+") : "";
 
   return (
-    <div className="event card relative rounded-lg bg-red-400 shadow-md h-[300px] w-[400px]">
+    <div className="event card p-3 rounded-lg bg-white flex shadow-md">
       <Dummy />
-      <div className="absolute bottom-0 p-4 backdrop-blur-sm  w-full">
-        <p className="text-md font-bold text-white">{name}</p>
-        <p className="text-sm text-white">4 mei - 5 mei 2024</p>
-        <p className="text-xs flex text-white">
+      <div className="text-dark px-3">
+        <p className="text-[32px] font-bold text-indigo">{name}</p>
+        <p className="text-md ">4 mei - 5 mei 2024</p>
+        <p className="text-md flex">
           <FaMapPin /> {city}, {location}
         </p>
         <div className="flex gap-2 py-2">
@@ -47,4 +47,4 @@ const EventCard = ({ location, name, id, city }: EventProps) => {
   );
 };
 
-export default EventCard;
+export default EventCard2;

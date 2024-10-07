@@ -1,35 +1,54 @@
 import React, { useEffect, useState } from "react";
 import ChatView from "./view";
 import { User } from "@/domain/entities/User";
-import { UserService } from "@/aplication/services/UserService";
 import { Event } from "@/domain/entities/Events";
-import { EventService } from "@/aplication/services/EventService";
+import { getAllEvents } from "@/infrastructure/api/EventApi";
+import { getAllUsers, leaveEventUsers } from "@/infrastructure/api/UserApi";
 
-const index = () => {
-  const [eventList, setEventList] = useState<User[]>([]);
-  const userService = new UserService();
+const Index = () => {
+  const [userEvent, setUserEvent] = useState<User[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
-  const eventService = new EventService();
+  const [loading, setLoading] = useState(true); // Start loading as true
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchEvents = async () => {
       try {
-        const fetchedUser = await userService.getAllUsers();
-        setEventList(fetchedUser);
+        const events = await getAllEvents();
+        setEvents(events);
       } catch (error) {
-        console.error("Failed to fetch user", error);
+        console.error("Error fetching events:", error);
       }
     };
-    const fetchEvents = async () => {
-      const events = await eventService.getAllEvents();
-      setEvents(events);
-    };
 
-    fetchEvents();
-    fetchUser();
+    const fetchAllUsers = async () => {
+      try {
+        const users = await getAllUsers();
+        setUserEvent(users);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
+    };
+    setTimeout(() => {
+      fetchAllUsers();
+      fetchEvents();
+    }, 2000);
   }, []);
 
-  return <ChatView eventData={eventList} eventFilter={events} />;
+  const leaveUsers = async (payload: any): Promise<void> => {
+    try {
+      await leaveEventUsers(payload);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <ChatView
+      userEvent={userEvent}
+      eventFilter={events}
+      handleLeaveUser={leaveUsers}
+    />
+  );
 };
 
-export default index;
+export default Index;

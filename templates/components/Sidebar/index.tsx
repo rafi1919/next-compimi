@@ -1,9 +1,12 @@
 import React from "react";
-import { FaHome, FaComment, FaTshirt, FaSignOutAlt } from "react-icons/fa";
+// import { FaHome, FaComment, FaTshirt, FaSignOutAlt } from "react-icons/fa";
 import { AiOutlineMenu } from "react-icons/ai";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
+import { Icon } from "@iconify/react";
+import { useDispatch } from "react-redux";
+import { logout } from "@/redux/authSlice";
 
 interface sidebarProps {
   onClose?: () => void;
@@ -11,6 +14,7 @@ interface sidebarProps {
 
 const Sidebar = ({ onClose }: sidebarProps) => {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   interface NavProps {
     icon: any;
@@ -19,52 +23,61 @@ const Sidebar = ({ onClose }: sidebarProps) => {
 
   const NavItem: NavProps[] = [
     {
-      icon: FaHome,
+      icon: "material-symbols-light:home-rounded",
       path: "/home",
     },
     {
-      icon: FaComment,
+      icon: "humbleicons:chat",
       path: "/chat",
     },
     {
-      icon: FaTshirt,
+      icon: "icon-park-outline:clothes-sweater",
       path: "/shirt",
     },
   ];
 
-  const logout = () => {
+  const handleLogout = () => {
     Cookies.remove("token");
+    localStorage.removeItem("persist:root");
     router.push("/");
+    dispatch(logout());
   };
 
   return (
-    <div className="fixed border-r-[1px] border-dark h-full z-100">
-      <div className="p-4 bg-paper h-full">
-        <p className="text-xl text-dark hover:text-red flex flex-col items-center p-5 lg:hidden md:relative relative ">
+    <div className="p-2 h-full lg:w-full md:w-full w-[100px] z-100">
+      <div className="p-4  rounded-[40px] h-full">
+        <p className="text-xl text-white hover:text-red flex flex-col items-center p-5 lg:hidden md:relative relative ">
           <span className="text-[32px]">
-            <AiOutlineMenu onClick={onClose} />
+            <Icon
+              icon="line-md:menu-to-close-alt-transition"
+              onClick={onClose}
+            />
           </span>
         </p>
 
         {NavItem.map((item) => (
           <Link href={item.path} key={item.icon}>
-            <p className="text-xl text-dark hover:text-red flex flex-col items-center p-5">
+            <p className="text-xl text-white hover:text-red flex flex-col items-center p-5">
               <span
-                className={`text-[32px]  p-2 rounded ${
+                className={`text-[32px]  p-2 rounded-full ${
                   router.pathname.startsWith(item.path)
-                    ? "shadow-xl shadow-red-700"
+                    ? "shadow-xl shadow-red-700 bg-red-500"
                     : ""
                 }`}
               >
                 {/* <span className="text-[32px]"> */}
-                <item.icon />
+                <Icon icon={item.icon} />
               </span>
             </p>
           </Link>
         ))}
         <p className="text-xl text-dark hover:text-red flex flex-col items-center p-5">
           <span className="text-[32px]">
-            <FaSignOutAlt onClick={logout} />
+            <Icon
+              icon="basil:logout-outline"
+              className="text-white"
+              onClick={handleLogout}
+            />
           </span>
         </p>
       </div>

@@ -3,8 +3,8 @@ import DetailEvent from "./view";
 import { useRouter } from "next/router";
 import { Event } from "@/domain/entities/Events";
 import { Day } from "@/domain/entities/Day";
-import { EventService } from "@/aplication/services/EventService";
-import { DayService } from "@/aplication/services/DayService";
+import { getAllDays } from "@/infrastructure/api/DayApi";
+import { getEventById } from "@/infrastructure/api/EventApi";
 
 const Index: React.FC = () => {
   const router = useRouter();
@@ -12,14 +12,12 @@ const Index: React.FC = () => {
   const pathPop = asPath.split("/").pop() || "";
 
   const [events, setEvents] = useState<Event[]>([]);
-  const eventService = new EventService();
   const [days, setDays] = useState<Day[]>([]);
-  const dayService = new DayService();
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const fetchedEvents = await eventService.getAllEvents();
+        const fetchedEvents = await getEventById(pathPop);
         setEvents(fetchedEvents);
       } catch (error) {
         console.error("Failed to fetch events", error);
@@ -28,7 +26,7 @@ const Index: React.FC = () => {
 
     const fetchDays = async () => {
       try {
-        const fetchedDays = await dayService.getAllDays(pathPop);
+        const fetchedDays = await getAllDays(pathPop);
         setDays(fetchedDays);
       } catch (error) {
         console.error("Failed to fetch days", error);
@@ -39,10 +37,9 @@ const Index: React.FC = () => {
     fetchDays();
   }, [asPath]);
 
-  const pathEvent = events.find((event) => event.id === pathPop);
   // console.log(days)
 
-  return <DetailEvent dataEvent={pathEvent} dayListData={days} />;
+  return <DetailEvent dataEvent={events} dayListData={days} />;
 };
 
 export default Index;

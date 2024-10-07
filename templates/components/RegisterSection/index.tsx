@@ -3,7 +3,9 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { Button } from "../Buttons";
 import FormInput from "../FormInput";
+import dotenv from "dotenv";
 
+dotenv.config();
 interface loginProps {
   onClick?: () => void;
 }
@@ -30,7 +32,7 @@ const RegisterSection = ({ onClick }: loginProps) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/auth/register",
+        `${process.env.DATABASE_URL}/auth/register`,
         {
           username: username,
           password: password,

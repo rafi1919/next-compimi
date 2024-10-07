@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ModalLayout from "@/templates/components/Modal/ModalLayout";
 import FormInput from "../../FormInput";
 import { Button } from "../../Buttons";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import { JoinEventRequest } from "@/domain/entities/JoinEvent";
-import { UserService } from "@/aplication/services/UserService";
+import { joinEventUsers } from "@/infrastructure/api/UserApi";
 
 interface ModalProps {
   open: Boolean;
@@ -20,8 +19,6 @@ const JoinModal: React.FC<ModalProps> = ({ open, onClose, dayId, eventId }) => {
   const [char, setCharacter] = useState<string>("");
   const router = useRouter();
 
-  const userservice = new UserService();
-
   const handleJoin = async (e: React.FormEvent) => {
     e.preventDefault();
     const JoinEventRequest: JoinEventRequest = {
@@ -31,12 +28,13 @@ const JoinModal: React.FC<ModalProps> = ({ open, onClose, dayId, eventId }) => {
       char,
     };
     try {
-      await userservice.joinEventUsers(JoinEventRequest);
+      await joinEventUsers(JoinEventRequest);
 
       router.push("/chat");
     } catch (error) {
       console.error;
     }
+    router.push("/chat");
   };
 
   return (

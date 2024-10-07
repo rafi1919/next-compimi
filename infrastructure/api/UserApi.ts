@@ -1,17 +1,21 @@
 import axios from "axios";
 import { User } from "@/domain/entities/User";
 import { JoinEventRequest } from "@/domain/entities/JoinEvent";
+import dotenv from "dotenv";
 
-const getAllUsers = async (): Promise<User[]> => {
-  const tokenAuth = localStorage.getItem("token");
-  const id = localStorage.getItem("userId");
-
-  const headers = { Authorization: `Bearer ${tokenAuth}` };
-  const response = await axios.get(`http://localhost:8080/api/user/${id}`, {
-    headers,
-  });
-
-  return response.data;
+dotenv.config();
+const getAllUsers = async () => {
+  try {
+    const tokenAuth = localStorage.getItem("token");
+    const id = localStorage.getItem("userId");
+    const headers = { Authorization: `Bearer ${tokenAuth}` };
+    const response = await axios.get(`${process.env.DATABASE_URL}/user/${id}`, {
+      headers,
+    });
+    return response.data;
+  } catch (error) {
+    console.error;
+  }
 };
 
 const joinEventUsers = async (eventData: JoinEventRequest): Promise<void> => {
@@ -20,7 +24,7 @@ const joinEventUsers = async (eventData: JoinEventRequest): Promise<void> => {
 
   const headers = { Authorization: `Bearer ${tokenAuth}` };
   const response = await axios.post(
-    `http://localhost:8080/api/user/join/${id}`,
+    `${process.env.DATABASE_URL}/user/join/${id}`,
     eventData,
     { headers }
   );
@@ -28,4 +32,29 @@ const joinEventUsers = async (eventData: JoinEventRequest): Promise<void> => {
   return response.data;
 };
 
-export { getAllUsers, joinEventUsers };
+const leaveEventUsers = async (eventData: JoinEventRequest): Promise<void> => {
+  const tokenAuth = localStorage.getItem("token");
+  const id = localStorage.getItem("userId");
+
+  const headers = { Authorization: `Bearer ${tokenAuth}` };
+  const response = await axios.post(
+    `${process.env.DATABASE_URL}/user/leave/${id}`,
+    eventData,
+    { headers }
+  );
+
+  return response.data;
+};
+
+const editAllUsers = async (eventData: User): Promise<void> => {
+  const id = localStorage.getItem("userId");
+
+  const response = await axios.post(
+    `${process.env.DATABASE_URL}/user/edit/${id}`,
+    eventData
+  );
+
+  return response.data;
+};
+
+export { getAllUsers, joinEventUsers, leaveEventUsers, editAllUsers };

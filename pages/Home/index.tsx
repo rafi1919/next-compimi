@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import HomeView from "./view";
 import { Event } from "@/domain/entities/Events";
-import { EventService } from "@/aplication/services/EventService";
+import { getAllEvents } from "@/infrastructure/api/EventApi";
 
 const index = () => {
   const [events, setEvents] = useState<Event[]>([]);
-  const eventService = new EventService();
 
   useEffect(() => {
     const fetchEvents = async () => {
-      const events = await eventService.getAllEvents();
+      const events = await getAllEvents();
       setEvents(events);
     };
     fetchEvents();

@@ -10,7 +10,7 @@ interface ModalProps {
 const LoginModal: React.FC<ModalProps> = ({ open, onClose }) => {
   return (
     <ModalLayout open={open} onClose={onClose}>
-      <LoginSection onClose={onClose} />
+      <LoginSection />
     </ModalLayout>
   );
 };

@@ -1,6 +1,10 @@
 import { FaSearch } from "react-icons/fa";
 
-const SearchBar = () => {
+interface searchProps {
+  onChange?: any;
+  value?: any;
+}
+const SearchBar = ({ onChange, value }: searchProps) => {
   return (
     <div className="pb-2 mx-auto text-gray-600">
       <input
@@ -8,6 +12,8 @@ const SearchBar = () => {
         type="search"
         name="search"
         placeholder="Search"
+        onChange={onChange}
+        value={value}
       />
       {/* <button type="submit" className="absolute right-0  mt-3 mr-4">
         <FaSearch />

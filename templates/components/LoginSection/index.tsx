@@ -2,15 +2,18 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Button } from "../Buttons";
+import { useDispatch } from "react-redux";
 import FormInput from "../FormInput";
+import { login } from "@/redux/authSlice";
 
-interface loginProps {
-  // onClose?: () => void;
-  onClick: () => void;
+interface LoginProps {
+  onClick?: () => void;
 }
-const LoginSection = ({ onClick }: loginProps) => {
+const LoginSection = ({ onClick }: LoginProps) => {
+  const dispatch = useDispatch();
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  // const [userData, setUserData] = useState({});
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
@@ -27,32 +30,34 @@ const LoginSection = ({ onClick }: loginProps) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:8080/api/auth", {
-        username: username,
-        password: password,
-      });
+      const response = await axios.post(
+        `http://localhost:8080/api/auth/login`,
+        {
+          username,
+          password,
+        }
+      );
 
       if (response.status === 200) {
-        // const token = {
-        //   "token" : response.data.token ,
-        //   "userId":response.data.userId
-        // }
-        const cokie =
-          (document.cookie = `token=${response.data.token}; path=/`);
+        document.cookie = `token=${response.data.token}; path=/`;
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("userId", response.data.userId);
-
+        const userData = {
+          instagram: response.data.instagram,
+          username: response.data.username,
+          userId: response.data.userId,
+        };
+        dispatch(login({ username, password, userData }));
+        console.log("test", userData);
         router.push("/home");
       }
-    } catch (error) {
+    } catch (err) {
       setError("Invalid username or password");
     }
   };
 
-  const handleRegister = () => {};
-
   return (
-    <div className=" lg:w-[470px] md:w-full w-full bg-white rounded-xl lg:h-[95vh] md:h-full h-full p-4 lg:m-4 m-0  flex items-center justify-center">
+    <div className="lg:w-[470px] md:w-full w-full bg-white rounded-xl lg:h-[95vh] md:h-full h-full p-4 lg:m-4 m-0 flex items-center justify-center">
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <FormInput
           value={username}
@@ -69,7 +74,7 @@ const LoginSection = ({ onClick }: loginProps) => {
           onChange={handleInputChange}
         />
         <p className="text-center text-gray-500">
-          Dont have account ? lets{" "}
+          Don't have an account? Let's{" "}
           <span className="text-leaf font-bold" onClick={onClick}>
             Register
           </span>

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  background: #f6f6f8;
+  background: #050505;
 }
 
 @layer components {
@@ -13,5 +13,14 @@ body {
 
   .transition-500 {
     @apply transition-all duration-500 ease-in-out;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 }

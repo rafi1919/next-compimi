@@ -6,6 +6,7 @@ const config = {
       colors: {
         dark: "#020000",
         paper: "#F6F6F8",
+        darkMode: "rgba(255, 255, 255, 0.07)",
         indigo: "#A57AEE",
         leaf: "#2DD2A2",
       },
